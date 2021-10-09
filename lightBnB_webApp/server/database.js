@@ -1,6 +1,7 @@
+/* eslint-disable camelcase */
 const { Pool } = require('pg');
-const properties = require('./json/properties.json');
-const users = require('./json/users.json');
+// const properties = require('./json/properties.json');
+// const users = require('./json/users.json');
 
 const pool = new Pool({
   user: 'vagrant',
@@ -81,7 +82,14 @@ exports.addUser = addUser;
  * @return {Promise<[{}]>} A promise to the reservations.
  */
 const getAllReservations = function(guest_id, limit = 10) {
-  return getAllProperties(null, 2);
+
+  let queryString = `SELECT * FROM reservations WHERE guest_id = $1 LIMIT $2`;
+
+  return pool.query(queryString, [guest_id, limit]).then(res => {
+    return res.rows;
+  }).catch(e => console.log(e));
+
+
 };
 exports.getAllReservations = getAllReservations;
 
@@ -113,9 +121,8 @@ exports.getAllProperties = getAllProperties;
  * @return {Promise<{}>} A promise to the property.
  */
 const addProperty = function(property) {
-  const propertyId = Object.keys(properties).length + 1;
-  property.id = propertyId;
-  properties[propertyId] = property;
-  return Promise.resolve(property);
+
+
+
 };
 exports.addProperty = addProperty;
