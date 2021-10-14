@@ -253,7 +253,9 @@ exports.updateReservation = updateReservation;
 const deleteReservation = function(reservationId) {
   const queryParams = [reservationId];
   const queryString = `DELETE FROM reservations WHERE id = $1`;
-  return client.query(queryString, queryParams)
+  return db.query(queryString, queryParams)
     .then(() => console.log("Successfully deleted!"))
     .catch(() => console.error(err));
 };
+
+exports.deleteReservation = deleteReservation;
