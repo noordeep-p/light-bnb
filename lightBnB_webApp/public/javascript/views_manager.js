@@ -15,7 +15,7 @@ $(() => {
     $updateReservationForm.detach();
     $propertyReviews.detach();
     $newReviewForm.detach();
-    $('#reservation-details').detach();
+    $('#reservation-details').remove();
 
 
     switch (item) {
