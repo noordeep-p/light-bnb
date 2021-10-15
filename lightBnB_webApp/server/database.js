@@ -110,7 +110,6 @@ const getAllProperties = function(options, limit = 10) {
   FROM properties
   LEFT JOIN property_reviews ON properties.id = property_id
   `;
-  console.log('options:', options);
   // check what search parameter were inputted by the user and use conditionals
   // to place the WHERE/ AND statements in the query
 
@@ -151,9 +150,7 @@ const getAllProperties = function(options, limit = 10) {
   ORDER BY cost_per_night
   LIMIT $${queryParams.length};
   `;
-  console.log(queryString, queryParams);
   return db.query(queryString, queryParams).then(res => {
-    console.log('res.rows:', res.rows);
     return res.rows;
   }).catch(e => console.log(e));
 };
@@ -168,7 +165,7 @@ exports.getAllProperties = getAllProperties;
 const addProperty = function(property) {
   const text = `INSERT INTO properties (title, description, owner_id, cover_photo_url, thumbnail_photo_url, cost_per_night, parking_spaces, number_of_bathrooms, number_of_bedrooms, active, province, city, country, street, post_code) 
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *;`;
-  const values = [property.title, property.description, property.owner_id, property.cover_photo_url, property.thumbnail_photo_url, property.cost_per_night, property.parking_spaces, property.number_of_bathrooms, property.number_of_bedrooms, true, property.province, property.city, property.country, property.street, property.post_code];
+  const values = [property.title, property.description, property.owner_id, property.cover_photo_url, property.thumbnail_photo_url, property.cost_per_night * 100, property.parking_spaces, property.number_of_bathrooms, property.number_of_bedrooms, true, property.province, property.city, property.country, property.street, property.post_code];
 
   return db.query(text, values).then((res) => {
     return res.rows[0];
@@ -240,7 +237,6 @@ const updateReservation = function(reservationData) {
   }
   queryString += ` WHERE id = $${queryParams.length + 1} RETURNING *;`;
   queryParams.push(reservationData.reservation_id);
-  console.log(queryString);
   return db.query(queryString, queryParams)
     .then(res => res.rows[0])
     .catch(err => console.error(err));

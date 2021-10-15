@@ -48,7 +48,6 @@ $(() => {
       });
       $('.add-review-button').on('click', function() {
         const idData = $(this).attr('id').substring(11);
-        console.log(idData);
         views_manager.show("newReview", idData);
       });
     } else {
