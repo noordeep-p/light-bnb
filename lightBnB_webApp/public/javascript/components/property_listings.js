@@ -32,7 +32,6 @@ $(() => {
       const listing = propertyListing.createListing(property, isReservation);
       addListing(listing);
     }
-    // if the property is a upcoming reservation then show the delete and update reservation buttons
     if (isReservation) {
       $('.update-button').on('click', function() {
         const idData = $(this).attr('id').substring(16);
@@ -42,8 +41,23 @@ $(() => {
       });
       $('.delete-button').on('click', function() {
         const idData = $(this).attr('id').substring(16);
-        deleteReservation(idData);
-        $(this).closest('article').remove();
+        deleteReservation(idData)
+          .then(() => console.log('Success!'))
+          .catch(err => console.error(err));
+      });
+      $('.add-review-button').on('click', function() {
+        const idData = $(this).attr('id').substring(11);
+        console.log(idData);
+        views_manager.show("newReview", idData);
+      });
+    } else {
+      $('.reserve-button').on('click', function() {
+        const idData = $(this).attr('id').substring(17);
+        views_manager.show('newReservation', idData);
+      });
+      $('.review_details').on('click', function() {
+        const idData = $(this).attr('id').substring(15);
+        views_manager.show('showReviews', idData);
       });
     }
   }
